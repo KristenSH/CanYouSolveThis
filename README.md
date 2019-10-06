@@ -2,4 +2,4 @@
 
 ## Relatert til jobbsøknad
 
-Jobber med et puzzle-spill til mobil i Unity.
+Jobber med et puzzle-spill til mobil i Unity. Så stay tuned. :)
