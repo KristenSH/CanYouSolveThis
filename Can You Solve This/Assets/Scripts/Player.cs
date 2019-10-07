@@ -2,46 +2,90 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Player : MonoBehaviour
 {
+    public float moveSpeed;
+    private float maxSpeed = 5.0f;
 
-    //private void OnMouseDown()
-    //{
-    //    if (!GameControl.sucsess)
-    //        transform.Rotate(0f, 0f, 90f);
-    //}
+    public GameObject deathParticles;
 
-    ////Ball properties
-    //private Rigidbody rBody;
-    //public float speed;
-    //private Animator anim;
+    private Rigidbody rBody;
+    //private Vector3 input;
 
-    //private float moveForwardBack = 5.0f;
-    //private float moveLeftRight = 300.0f;
-    //public float moveUpDown;
+    //Inputs
+    private float lvAxis;
+    private float lhAxis;
 
+    private Vector3 spawn;
 
-    ////Inputs for smartphone
-    //[SerializeField]
-    //float lvAxis;
-    //float lhAxis;
-    //float lt;
-    //float rt;
-    //bool RotateLeft;
-    //bool RotateRight;
+    // Start is called before the first frame update
+    void Start()
+    {
+        spawn = transform.position;
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //    rBody = GetComponent<Rigidbody>();
-    //    anim = GetComponent<Animator>();
-    //    Vector3 pos = transform.localPosition;
-    //}
+        rBody = GetComponent<Rigidbody>();
+    }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    //Input function
+    // Update is called once per frame
+    void Update()
+    {
+        Controls();
 
-    //}
+        Movement();
+
+        fallingDeath();
+    }
+
+    void Controls()
+    {
+        lhAxis = Input.GetAxisRaw("Horizontal");
+
+        lvAxis = Input.GetAxisRaw("Vertical");
+
+        //input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        //if (rBody.velocity.magnitude < maxSpeed)
+        //{
+        //    rBody.AddRelativeForce(input * moveSpeed);
+        //}
+    }
+
+    void Movement()
+    {
+        Vector3 move = new Vector3(lhAxis, 0.0f, lvAxis);
+
+        if (rBody.velocity.magnitude < maxSpeed)
+        {
+            rBody.AddForce(move * moveSpeed);
+        }
+    }
+
+    void fallingDeath()
+    {
+        if (transform.position.y < -2)
+        {
+            Death();
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.transform.CompareTag("Enemy"))
+        {
+            Death();
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Goal")
+        {
+            GameManager.CompleteLevel();
+        }
+    }
+
+    void Death()
+    {
+        Instantiate(deathParticles, transform.position, Quaternion.Euler(270, 0, 0));
+        transform.position = spawn;
+    }
 }
