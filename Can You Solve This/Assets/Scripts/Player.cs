@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
     public float moveSpeed;
     private float maxSpeed = 5.0f;
 
     public GameObject deathParticles;
 
     private Rigidbody rBody;
-    //private Vector3 input;
 
     //Inputs
+    public Joystick joystick;
+    public Joybutton joybutton;
+
     private float lvAxis;
     private float lhAxis;
 
@@ -21,6 +24,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         spawn = transform.position;
 
         rBody = GetComponent<Rigidbody>();
@@ -38,15 +42,9 @@ public class Player : MonoBehaviour
 
     void Controls()
     {
-        lhAxis = Input.GetAxisRaw("Horizontal");
+        lhAxis = joystick.Horizontal;
+        lvAxis = joystick.Vertical;
 
-        lvAxis = Input.GetAxisRaw("Vertical");
-
-        //input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        //if (rBody.velocity.magnitude < maxSpeed)
-        //{
-        //    rBody.AddRelativeForce(input * moveSpeed);
-        //}
     }
 
     void Movement()
