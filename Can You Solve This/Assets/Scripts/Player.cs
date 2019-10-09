@@ -36,8 +36,6 @@ public class Player : MonoBehaviour
 
         Movement();
 
-        Open();
-
         fallingDeath();
     }
 
