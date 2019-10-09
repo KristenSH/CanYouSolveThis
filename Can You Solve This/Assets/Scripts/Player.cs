@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
 
     //Inputs
     public Joystick joystick;
-    public Joybutton joybutton;
 
     private float lvAxis;
     private float lhAxis;
@@ -36,6 +35,8 @@ public class Player : MonoBehaviour
         Controls();
 
         Movement();
+
+        Open();
 
         fallingDeath();
     }

@@ -7,7 +7,7 @@ public class Joybutton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
 
     [HideInInspector]
-    protected bool Pressed;
+    public bool Pressed;
 
 
     // Start is called before the first frame update
