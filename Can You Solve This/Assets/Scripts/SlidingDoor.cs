@@ -37,22 +37,47 @@ public class SlidingDoor : MonoBehaviour
         if (!doorBody)
             return;
 
-        if (direction == OpenDirection.x)
+        if (!open && (joybutton.Pressed || Input.GetButton("Fire1")))
         {
-            doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
-                (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
+            if (direction == OpenDirection.x)
+            {
+                doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
+                    (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
+            }
+
+            else if (direction == OpenDirection.y)
+            {
+                doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
+                    (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
+            }
+
+            else if (direction == OpenDirection.z)
+            {
+                doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
+                    (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
+            }
+
         }
 
-        else if (direction == OpenDirection.y)
+        if (open && !(joybutton.Pressed || Input.GetButton("Fire1")))
         {
-            doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
-                (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
+            open = false;
         }
+    }
 
-        else if (direction == OpenDirection.z)
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
-            doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
-                (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
+            open = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            open = false;
         }
     }
 }
