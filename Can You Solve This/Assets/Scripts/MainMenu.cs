@@ -6,9 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public string startLevel;
-    
-    public string levelSelect;
-
+   
     public string setting;
 
     public void NewGame()
@@ -16,13 +14,14 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(startLevel);
     }
 
-    public void LevelSelect()
+    public void Setting()
     {
-        SceneManager.LoadScene(levelSelect);
+        SceneManager.LoadScene(setting);
     }
 
     public void QuitGame()
     {
+        Debug.Log("Game Exited");
         Application.Quit();
     }
 }

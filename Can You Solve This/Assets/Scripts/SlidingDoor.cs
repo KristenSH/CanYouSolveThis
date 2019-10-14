@@ -4,80 +4,35 @@ using UnityEngine;
 
 public class SlidingDoor : MonoBehaviour
 {
-    // Opening directions
-    public enum OpenDirection { x, y, z };
+    // Place this on the button object.
 
-    public OpenDirection direction = OpenDirection.y;
-    public float openDistance = 3f;
-    public float openSpeed = 2.0f;
-    public Transform doorBody;
+    public GameObject button;
+    public GameObject leftDoor;
+    public GameObject rightDoor;
 
-    protected bool open;
-    public Joybutton joybutton;
+    public bool isPressed = false;
 
-    Vector3 defaultDoorPosition;
+    Animator leftAnim;
+    Animator rightAnim;
 
-    // Start is called before the first frame update
     void Start()
     {
-        if(doorBody)
-        {
-            defaultDoorPosition = doorBody.localPosition;
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Open();  
-    }
-
-    void Open()
-    {
-        if (!doorBody)
-            return;
-
-        if (!open && (joybutton.Pressed || Input.GetButton("Fire1")))
-        {
-            if (direction == OpenDirection.x)
-            {
-                doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
-                    (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
-            }
-
-            else if (direction == OpenDirection.y)
-            {
-                doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
-                    (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
-            }
-
-            else if (direction == OpenDirection.z)
-            {
-                doorBody.localPosition = new Vector3(Mathf.Lerp(doorBody.localPosition.x, defaultDoorPosition.x +
-                    (open ? openDistance : 0), Time.deltaTime * openSpeed), doorBody.localPosition.y, doorBody.localPosition.z);
-            }
-
-        }
-
-        if (open && !(joybutton.Pressed || Input.GetButton("Fire1")))
-        {
-            open = false;
-        }
+        leftAnim = leftDoor.GetComponent<Animator>();
+        rightAnim = rightDoor.GetComponent<Animator>();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.transform.tag == "Player")
         {
-            open = true;
+            isPressed = true;
+            SlideDoors(true);
         }
     }
 
-    void OnTriggerExit(Collider other)
+    void SlideDoors(bool state)
     {
-        if (other.CompareTag("Player"))
-        {
-            open = false;
-        }
+        leftAnim.SetBool("slide", state);
+        rightAnim.SetBool("slide", state);
     }
 }

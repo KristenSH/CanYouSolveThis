@@ -8,12 +8,16 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     private float maxSpeed = 5.0f;
 
+    public float jumpSpeed = 5.0f;
+    public bool isGrounded;
+
     public GameObject deathParticles;
 
     private Rigidbody rBody;
 
     //Inputs
     public Joystick joystick;
+    public Joybutton joybutton;
 
     private float lvAxis;
     private float lhAxis;
@@ -36,6 +40,8 @@ public class Player : MonoBehaviour
 
         Movement();
 
+        Jump();
+
         fallingDeath();
     }
 
@@ -43,7 +49,6 @@ public class Player : MonoBehaviour
     {
         lhAxis = joystick.Horizontal;
         lvAxis = joystick.Vertical;
-
     }
 
     void Movement()
@@ -64,8 +69,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Jump()
+    {
+        if (joybutton.Pressed && isGrounded)
+        {
+            rBody.AddForce(new Vector3(0, 2, 0) * jumpSpeed, ForceMode.Impulse);
+            isGrounded = false;
+        }
+    }
+
     void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.tag == ("Ground") && isGrounded == false)
+        {
+            isGrounded = true;
+        }
+
         if (other.transform.CompareTag("Enemy"))
         {
             Death();
