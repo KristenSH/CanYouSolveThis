@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class SlidingDoor : MonoBehaviour
 {
-    // Place this on the button object.
+    // Place this on the buttonTrigger object.
 
-    public GameObject button;
+    public GameObject buttonTrigger;
+    public GameObject buttonSphere;
+
     public GameObject leftDoor;
     public GameObject rightDoor;
 
@@ -19,6 +21,23 @@ public class SlidingDoor : MonoBehaviour
     {
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
+
+        buttonSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        var buttonRenderer = buttonSphere.GetComponent<Renderer>();
+        buttonRenderer.material.SetColor("_Color", Color.red);
+    }
+
+    void Update()
+    {
+        ChangeColor(); 
+    }
+
+    void ChangeColor()
+    {
+        if (isPressed == true)
+        {
+            buttonSphere.GetComponent<Renderer>().material.color = Color.green;
+        }
     }
 
     void OnTriggerEnter(Collider other)
